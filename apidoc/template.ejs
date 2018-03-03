@@ -1,0 +1,118 @@
+# <a name="apitop"></a><%= project.name %> v<%= project.version %>
+
+<%= project.description %>
+
+<% Object.keys(data).forEach(function (group) { -%>
+- [<%= group %>](#<%=: group | mlink %>)
+  <% Object.keys(data[group]).forEach(function (sub) { -%>
+- [<%= data[group][sub][0].title %>](#<%=: data[group][sub][0].title | mlink %>)
+  <% }); -%>
+
+<% }); %>
+
+<% if (prepend) { -%>
+<%- prepend %>
+<% } -%>
+<% Object.keys(data).forEach(function (group) { -%>
+# <%= group %>
+
+<% Object.keys(data[group]).forEach(function (sub) { -%>
+## <%= data[group][sub][0].title %>
+[Back to top](#apitop)
+
+<%-: data[group][sub][0].description | undef %>
+
+**<%-: data[group][sub][0].type | upcase %>**
+```
+<%- project.url %><%= data[group][sub][0].url %>
+```
+<% if (data[group][sub][0].header && data[group][sub][0].header.fields.Header.length) { -%>
+
+### Headers
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+<% data[group][sub][0].header.fields.Header.forEach(function (header) { -%>
+| <%- header.field %>     | <%- header.type %>      | <%- header.optional ? '**optional**' : '' %> <%- header.description %>              |
+<% }); /*foreach header*/ -%>
+<% } /*if headers*/ -%>
+<%
+if (data[group][sub][0].parameter) {
+  Object.keys(data[group][sub][0].parameter.fields).forEach(function (pgroup) {
+    var hasSomeDefault = data[group][sub][0].parameter.fields[pgroup].some(function (param) {
+      return !!param.defaultValue;
+    });
+    var hasSomeAllowed = data[group][sub][0].parameter.fields[pgroup].some(function (param) {
+      return !!param.allowedValues || !!param.size;
+    });
+-%>
+
+### <%= pgroup %> Parameters
+
+| Field    | Type    | Description    |<% if (hasSomeDefault) { %> Default    |<% } if (hasSomeAllowed) { %> Allowed    |<% } %>
+|----------|---------|----------------|<% if (hasSomeDefault) { %>------------|<% } if (hasSomeAllowed) { %>------------|<% } %>
+<% data[group][sub][0].parameter.fields[pgroup].forEach(function (param) { -%>
+| <%- param.field %> | <%- param.type %> | <%- param.optional ? '**optional** ' : '' %><%- param.description %> | <%- param.defaultValue ? '`' + param.defaultValue + '`' : '' %><%- hasSomeDefault ? ' | ' : '' %><%- param.allowedValues || param.size ? (param.allowedValues || [param.size]).map(function(p) { return '`' + p + '`';}).join(', ') : '' %><%- hasSomeAllowed ? ' |' : '' %>
+<% }); /*foreach (pgroup) parameter*/ -%>
+<% }); /*foreach param parameter*/ -%>
+<% } /*if parameters*/ -%>
+<% if (data[group][sub][0].examples) { -%>
+<% data[group][sub][0].examples.forEach(function (example) { -%>
+
+### <%= example.title %>
+
+```
+<%- example.content %>
+```
+<% }); /*foreach example*/ -%>
+<% } /*if example*/ -%>
+<% if (data[group][sub][0].success) { -%>
+<% if (data[group][sub][0].success.fields) { -%>
+<% Object.keys(data[group][sub][0].success.fields).forEach(function (sgroup) { -%>
+
+### <%= sgroup %>
+
+| Field    | Type    | Description              |
+|----------|---------|--------------------------|
+<% data[group][sub][0].success.fields[sgroup].forEach(function (param) { -%>
+| <%- param.field.replace(data[group][sub][0].success.fields[sgroup][0].field + '.', '&emsp;') %> | <%- param.type %> | <%- param.description %> |
+<% }); /*foreach (sgroup) parameter*/ -%>
+<% }); /*foreach success field*/ -%>
+<% } /*if success.fields*/ -%>
+<% if (data[group][sub][0].success.examples) { -%>
+<% data[group][sub][0].success.examples.forEach(function (example) { -%>
+
+### <%= example.title %>
+
+```<%- example.type ? example.type.replace('json', 'js') : '' %>
+<%- example.content %>
+```
+<% }); /*foreach success example*/ -%>
+<% } /*if success.examples*/ -%>
+<% } /*if success*/ -%>
+<% if (data[group][sub][0].error) { -%>
+<% if (data[group][sub][0].error.fields) { -%>
+<% Object.keys(data[group][sub][0].error.fields).forEach(function (sgroup) { -%>
+
+### <%= sgroup %>
+
+| Field    | Type    | Description              |
+|----------|---------|--------------------------|
+<% data[group][sub][0].error.fields[sgroup].forEach(function (param) { -%>
+| <%- param.field.replace(data[group][sub][0].error.fields[sgroup][0].field + '.', '&emsp;') %> | <%- param.type %> | <%- param.description %> |
+<% }); /*foreach (sgroup) parameter*/ -%>
+<% }); /*foreach error field*/ -%>
+<% } /*if error.fields*/ -%>
+<% if (data[group][sub][0].error.examples) { -%>
+<% data[group][sub][0].error.examples.forEach(function (example) { -%>
+
+### <%= example.title %>
+
+```<%- example.type ? example.type.replace('json', 'js') : '' %>
+<%- example.content %>
+```
+<% }); /*foreach error example*/ -%>
+<% } /*if error.examples*/ -%>
+<% } /*if error*/ -%>
+<% }); /*foreach sub */ -%>
+<% }); /*foreach group*/ -%>

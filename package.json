@@ -1,0 +1,60 @@
+{
+  "name": "data-api",
+  "version": "1.0.0",
+  "description": "An Express app that provides a RESTful API for storing and retrieving IAQ data",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "app.js",
+  "apidoc": {
+    "name": "Atmena API",
+    "title": "Atmena API",
+    "description": "A RESTful API for storing and retrieving Atmena IAQ data",
+    "url": "https://api.atmena.com",
+    "template": {
+      "withGenerator": false
+    }
+  },
+  "scripts": {
+    "postinstall": "grunt symlink",
+    "start": "node app.js",
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/zephyrfydp/data-api.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/zephyrfydp/data-api/issues"
+  },
+  "homepage": "https://gitlab.com/zephyrfydp/data-api#README",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "~4.13.3",
+    "grunt": "^0.4.5",
+    "grunt-contrib-symlink": "^1.0.0",
+    "jit-grunt": "^0.10.0",
+    "log4js": "^0.6.31",
+    "morgan": "^1.6.1",
+    "mysql-plus": "^0.1.2",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {
+    "apidoc-markdown": "^0.2.0",
+    "es6-callback-manager": "^2.0.0",
+    "grunt-apidoc": "^0.11.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-env": "^0.4.4",
+    "grunt-eslint": "^18.0.0",
+    "grunt-express-server": "^0.5.1",
+    "grunt-mkdir": "^1.0.0",
+    "grunt-mocha-istanbul": "^3.0.1",
+    "grunt-mocha-test": "^0.12.7",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.2",
+    "should": "^8.2.2",
+    "should-sinon": "0.0.5",
+    "sinon": "^1.17.3",
+    "socket.io-client": "^1.4.5",
+    "supertest": "^1.2.0"
+  }
+}
